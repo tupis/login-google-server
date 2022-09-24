@@ -1,10 +1,8 @@
-import * as express from "express";
-import { Request, Response } from "express";
+import { Router } from "express";
+import { login } from "../controller/users_google";
 
-const router = express.Router();
+const router = Router();
 
-router.get("/", (req: Request, res: Response) => {
-  res.send("Hello World");
-});
+router.post("/login/google", login);
 
 export default router;
