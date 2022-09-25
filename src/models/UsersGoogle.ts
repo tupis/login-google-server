@@ -5,6 +5,8 @@ import connection from "../config/config";
 export interface IUsersGoogle {
   id: number;
   email: string;
+  name: string;
+  sub: string;
 }
 
 export default class UsersGoogle extends Model<IUsersGoogle> {}
@@ -18,6 +20,14 @@ UsersGoogle.init(
       autoIncrement: true,
     },
     email: {
+      type: DataType.STRING,
+      allowNull: false,
+    },
+    name: {
+      type: DataType.STRING,
+      allowNull: false,
+    },
+    sub: {
       type: DataType.STRING,
       allowNull: false,
     },
