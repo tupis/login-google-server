@@ -2,6 +2,8 @@ import * as express from "express";
 import router from "./routes/routes";
 import connection from "./config/config";
 import { json, urlencoded } from "body-parser";
+import * as dotent from "dotenv";
+dotent.config();
 
 connection
   .sync()
@@ -9,6 +11,7 @@ connection
   .catch(() => console.log("Connection failed to database"));
 
 const app = express();
+
 app.use(json());
 app.use(urlencoded({ extended: true }));
 
