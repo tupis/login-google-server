@@ -1,6 +1,7 @@
 import { DataType } from "sequelize-typescript";
 import { Model } from "sequelize";
 import connection from "../config/config";
+import * as bcrypt from "bcrypt";
 
 export interface IUsersGoogle {
   id: number;
@@ -37,3 +38,11 @@ UsersGoogle.init(
     tableName: "users_google",
   }
 );
+
+UsersGoogle.beforeCreate(async (user: any) => {
+  const hashedSub = await bcrypt.hash(
+    user.sub,
+    Number(process.env.BCRYPT_SALT)
+  );
+  user.sub = hashedSub;
+});
