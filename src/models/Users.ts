@@ -1,0 +1,48 @@
+import { DataType } from "sequelize-typescript";
+import { Model } from "sequelize";
+import connection from "../config/config";
+import * as bcrypt from "bcrypt";
+
+export interface IUsers {
+  id: number;
+  name: string;
+  email: string;
+  password: string;
+}
+
+export default class Users extends Model<IUsers> {}
+
+Users.init(
+  {
+    id: {
+      type: DataType.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    email: {
+      type: DataType.STRING,
+      allowNull: false,
+    },
+    name: {
+      type: DataType.STRING,
+      allowNull: false,
+    },
+    password: {
+      type: DataType.STRING,
+      allowNull: false,
+    },
+  },
+  {
+    sequelize: connection,
+    tableName: "users",
+  }
+);
+
+Users.beforeCreate(async (user: any) => {
+  const hashedPassword = await bcrypt.hash(
+    user.password,
+    Number(process.env.BCRYPT_SALT)
+  );
+  user.password = hashedPassword;
+});
