@@ -10,7 +10,9 @@ export interface IUsers {
   password: string;
 }
 
-export default class Users extends Model<IUsers> {}
+export default class Users extends Model<IUsers> {
+  isCorrectPassword!: (password: string, user: any) => Promise<boolean>;
+}
 
 Users.init(
   {
@@ -46,3 +48,9 @@ Users.beforeCreate(async (user: any) => {
   );
   user.password = hashedPassword;
 });
+
+Users.prototype.isCorrectPassword = async (password, user) => {
+  const result = await bcrypt.compare(password, user.password);
+
+  return result;
+};
