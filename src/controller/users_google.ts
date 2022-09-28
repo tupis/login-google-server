@@ -17,7 +17,7 @@ export const loginGoogle: RequestHandler = async (req, res) => {
       }
       return res
         .status(404)
-        .json({ error: "erro ao fazer login com sua conta google" });
+        .json({ error: "Erro ao fazer login com sua conta google" });
     }
 
     const user = await UsersGoogle.create({ ...req.body });
