@@ -26,6 +26,11 @@ export const login: RequestHandler = async (req, res) => {
       return res.status(404).json({ error: "Email ou Senha inválido" });
     }
 
+    const isCorretPassword = await user?.isCorrectPassword(password, user);
+    if (!isCorretPassword) {
+      return res.status(402).json({ error: "Email ou senha inválido" });
+    }
+
     return res.status(201).json({ user, token });
   } catch (error) {
     return res.status(404).json({ error: "Erro ao fazer o login" });
