@@ -10,7 +10,9 @@ export interface IUsersGoogle {
   sub: string;
 }
 
-export default class UsersGoogle extends Model<IUsersGoogle> {}
+export default class UsersGoogle extends Model<IUsersGoogle> {
+  isSubCorret!: (password: string, user: any) => Promise<boolean>;
+}
 
 UsersGoogle.init(
   {
@@ -46,3 +48,8 @@ UsersGoogle.beforeCreate(async (user: any) => {
   );
   user.sub = hashedSub;
 });
+
+UsersGoogle.prototype.isSubCorret = async (sub, user) => {
+  const result = await bcrypt.compare(sub, user.sub);
+  return result;
+};
