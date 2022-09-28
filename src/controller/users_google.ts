@@ -11,7 +11,13 @@ export const loginGoogle: RequestHandler = async (req, res) => {
     });
 
     if (isUser) {
-      return res.status(200).json({ user: isUser, token });
+      const isCorrectSub = await isUser?.isSubCorret(sub, isUser);
+      if (isCorrectSub) {
+        return res.status(200).json({ user: isUser, token });
+      }
+      return res
+        .status(404)
+        .json({ error: "erro ao fazer login com sua conta google" });
     }
 
     const user = await UsersGoogle.create({ ...req.body });
