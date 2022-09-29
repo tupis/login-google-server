@@ -36,3 +36,37 @@ export const login: RequestHandler = async (req, res) => {
     return res.status(404).json({ error: "Erro ao fazer o login" });
   }
 };
+
+export const updateName: RequestHandler = async (req: any, res) => {
+  try {
+    const { name } = req.body;
+    console.log(req.user.email);
+    const newName = await Users.findOne({
+      where: {
+        email: req.user.email,
+      },
+    });
+    await newName?.update({ name });
+    await newName?.save();
+
+    return res.status(201).json({ message: "Nome atualizado com sucesso" });
+  } catch (error) {
+    return res.status(404).json({ error: "Error ao tentar atualizar o nome" });
+  }
+};
+
+export const updatePassword: RequestHandler = async (req: any, res) => {
+  try {
+    const { password } = req.body;
+    const newPassword = await Users.findOne({
+      where: {
+        email: req.user.email,
+      },
+    });
+    await newPassword?.update({ password });
+    await newPassword?.save();
+    return res.status(201).json({ message: "Senha alterada com sucesso" });
+  } catch (error) {
+    return res.status(404).json({ error: "Erro ao atualizar a senha" });
+  }
+};
