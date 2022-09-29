@@ -25,6 +25,7 @@ Users.init(
     email: {
       type: DataType.STRING,
       allowNull: false,
+      unique: true,
     },
     name: {
       type: DataType.STRING,
@@ -47,6 +48,15 @@ Users.beforeCreate(async (user: any) => {
     Number(process.env.BCRYPT_SALT)
   );
   user.password = hashedPassword;
+});
+
+Users.beforeUpdate(async (record: any) => {
+  const hashedPassword = await bcrypt.hash(
+    record.dataValues.password,
+    Number(process.env.BCRYPT_SALT)
+  );
+
+  record.dataValues.password = hashedPassword;
 });
 
 Users.prototype.isCorrectPassword = async (password, user) => {
