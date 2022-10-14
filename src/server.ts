@@ -3,6 +3,7 @@ import router from "./routes/routes";
 import connection from "./config/config";
 import { json, urlencoded } from "body-parser";
 import * as dotent from "dotenv";
+import * as cors from "cors";
 dotent.config();
 
 connection
@@ -12,6 +13,7 @@ connection
 
 const app = express();
 
+app.use(cors());
 app.use(json());
 app.use(urlencoded({ extended: true }));
 
